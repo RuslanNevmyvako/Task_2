@@ -1,0 +1,8 @@
+
+🔵 Создаем пользователя: test_user_1787584716477_9193@test.com
+📡 Попытка 1/3: POST https://stellarburgers.education-services.ru/api/auth/register
+📝 Попытка 1: Статус 200
+✅ Пользователь создан: test_user_1787584716477_9193@test.com
+🟢 Обновляем name на: Gina Brown
+📡 Попытка 1/3: PATCH https://stellarburgers.education-services.ru/api/auth/user
+✅ name успешно обновлен

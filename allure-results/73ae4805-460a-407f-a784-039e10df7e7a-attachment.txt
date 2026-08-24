@@ -1,0 +1,9 @@
+
+🔵 Создаем пользователя: test_user_1787584694824_2025@test.com
+📡 Попытка 1/3: POST https://stellarburgers.education-services.ru/api/auth/register
+📝 Попытка 1: Статус 200
+✅ Пользователь создан: test_user_1787584694824_2025@test.com
+📡 Попытка 1/3: GET https://stellarburgers.education-services.ru/api/ingredients
+✅ Получено 15 ингредиентов
+🟢 Создаем заказ с ингредиентами: ['61c0c5a71d1f82001bdaaa6d', '61c0c5a71d1f82001bdaaa6f']
+📡 Попытка 1/3: POST https://stellarburgers.education-services.ru/api/orders
