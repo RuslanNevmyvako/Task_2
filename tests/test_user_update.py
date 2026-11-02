@@ -1,81 +1,51 @@
-import pytest
-import allure
-from faker import Faker
-from helpers.api_helpers import ApiHelpers
+import time
 
-fake = Faker()
-BASE_URL = "https://stellarburgers.education-services.ru/api"
+import allure
 
 
 @allure.feature("Изменение данных пользователя")
 class TestUserUpdate:
     """Тесты для изменения данных пользователя"""
-    
-    @allure.title("Изменение данных пользователя с авторизацией")
-    @pytest.mark.parametrize("field_to_update", ["email", "name"])
-    def test_update_user_with_auth(self, create_and_delete_user, api_helpers, field_to_update):
-        """Тест изменения данных пользователя с авторизацией"""
-        
-        assert create_and_delete_user is not None, "Пользователь не создан"
-        
-        user_data = create_and_delete_user["data"]
+
+    @allure.title("Изменение email пользователя с авторизацией")
+    def test_update_user_email_with_auth(self, create_and_delete_user, api_helpers):
+        """Изменение email авторизованным пользователем"""
         token = create_and_delete_user["access_token"]
-        
-        # Проверяем, что токен есть
-        assert token is not None, "Токен не получен"
-        assert len(token) > 0, "Токен пустой"
-        
-        # Подготавливаем данные для обновления
-        update_data = {}
-        if field_to_update == "email":
-            # Используем unique для гарантии уникальности
-            update_data["email"] = fake.unique.email()
-        else:
-            update_data["name"] = fake.unique.name()
-        
-        print(f"🟢 Обновляем {field_to_update} на: {update_data[field_to_update]}")
-        
-        response = api_helpers.update_user(token, update_data)
-        
-        # Проверяем, что ответ получен
-        assert response is not None, "Ответ от сервера не получен (None)"
-        
-        # Проверяем код ответа
-        assert response.status_code == 200, f"Ожидался 200, получен {response.status_code}. Ответ: {response.text}"
-        
-        # Проверяем тело ответа
+        timestamp = int(time.time() * 1000)
+        new_email = f"updated_{timestamp}@test.com"
+
+        response = api_helpers.update_user(token, {"email": new_email})
         response_data = response.json()
+
+        assert response.status_code == 200, f"Ожидался 200, получен {response.status_code}. Ответ: {response.text}"
         assert response_data["success"] is True
-        
-        if field_to_update == "email":
-            assert response_data["user"]["email"] == update_data["email"]
-        else:
-            assert response_data["user"]["name"] == update_data["name"]
-        
-        print(f"✅ {field_to_update} успешно обновлен")
-    
+        assert response_data["user"]["email"] == new_email
+
+    @allure.title("Изменение имени пользователя с авторизацией")
+    def test_update_user_name_with_auth(self, create_and_delete_user, api_helpers):
+        """Изменение имени авторизованным пользователем"""
+        token = create_and_delete_user["access_token"]
+        timestamp = int(time.time() * 1000)
+        new_name = f"UpdatedUser_{timestamp}"
+
+        response = api_helpers.update_user(token, {"name": new_name})
+        response_data = response.json()
+
+        assert response.status_code == 200, f"Ожидался 200, получен {response.status_code}. Ответ: {response.text}"
+        assert response_data["success"] is True
+        assert response_data["user"]["name"] == new_name
+
     @allure.title("Изменение данных пользователя без авторизации")
     def test_update_user_without_auth(self, api_helpers):
-        """Тест изменения данных пользователя без авторизации"""
+        """Изменение данных без авторизации — 401"""
         update_data = {
-            "email": fake.unique.email(),
-            "name": fake.unique.name()
+            "email": "unauthorized@test.com",
+            "name": "Unauthorized",
         }
-        
-        print(f"🟢 Обновление без авторизации: {update_data}")
-        
-        # Отправляем запрос без токена
+
         response = api_helpers.update_user("", update_data)
-        
-        # Проверяем, что ответ получен
-        assert response is not None, "Ответ от сервера не получен (None)"
-        
-        # Проверяем код ответа
-        assert response.status_code == 401, f"Ожидался 401, получен {response.status_code}. Ответ: {response.text}"
-        
-        # Проверяем тело ответа
         response_data = response.json()
+
+        assert response.status_code == 401, f"Ожидался 401, получен {response.status_code}. Ответ: {response.text}"
         assert response_data["success"] is False
-        assert "You should be authorised" in response_data["message"]
-        
-        print("✅ Запрос без авторизации вернул 401")
+        assert response_data["message"] == "You should be authorised"

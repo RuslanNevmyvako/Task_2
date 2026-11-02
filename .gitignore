@@ -6,3 +6,4 @@ tests/__pycache__/test_user_update.cpython-314-pytest-9.0.3.pyc
 helpers/__pycache__/api_helpers.cpython-314.pyc
 data/__pycache__/test_data.cpython-314-pytest-9.0.3.pyc
 __pycache__/conftest.cpython-314-pytest-9.0.3.pyc
+data/__pycache__/config.cpython-314.pyc
