@@ -2,6 +2,8 @@ import time
 
 import allure
 
+from data.test_data import TestData
+
 
 @allure.feature("Изменение данных пользователя")
 class TestUserUpdate:
@@ -9,7 +11,6 @@ class TestUserUpdate:
 
     @allure.title("Изменение email пользователя с авторизацией")
     def test_update_user_email_with_auth(self, create_and_delete_user, api_helpers):
-        """Изменение email авторизованным пользователем"""
         token = create_and_delete_user["access_token"]
         timestamp = int(time.time() * 1000)
         new_email = f"updated_{timestamp}@test.com"
@@ -23,7 +24,6 @@ class TestUserUpdate:
 
     @allure.title("Изменение имени пользователя с авторизацией")
     def test_update_user_name_with_auth(self, create_and_delete_user, api_helpers):
-        """Изменение имени авторизованным пользователем"""
         token = create_and_delete_user["access_token"]
         timestamp = int(time.time() * 1000)
         new_name = f"UpdatedUser_{timestamp}"
@@ -37,7 +37,6 @@ class TestUserUpdate:
 
     @allure.title("Изменение данных пользователя без авторизации")
     def test_update_user_without_auth(self, api_helpers):
-        """Изменение данных без авторизации — 401"""
         update_data = {
             "email": "unauthorized@test.com",
             "name": "Unauthorized",
@@ -48,4 +47,4 @@ class TestUserUpdate:
 
         assert response.status_code == 401, f"Ожидался 401, получен {response.status_code}. Ответ: {response.text}"
         assert response_data["success"] is False
-        assert response_data["message"] == "You should be authorised"
+        assert response_data["message"] == TestData.ERROR_MESSAGES["unauthorized"]

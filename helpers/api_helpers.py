@@ -24,10 +24,6 @@ class ApiHelpers:
         for attempt in range(self.max_retries):
             try:
                 return requests.request(method, url, timeout=10, **kwargs)
-            except requests.exceptions.Timeout:
-                time.sleep(self.retry_delay)
-            except requests.exceptions.ConnectionError:
-                time.sleep(self.retry_delay)
             except Exception:
                 time.sleep(self.retry_delay)
         return None
