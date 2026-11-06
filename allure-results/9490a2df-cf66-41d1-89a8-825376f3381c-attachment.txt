@@ -1,0 +1,8 @@
+
+🔵 Создаем пользователя: test_user_1787584715769_1337@test.com
+📡 Попытка 1/3: POST https://stellarburgers.education-services.ru/api/auth/register
+📝 Попытка 1: Статус 200
+✅ Пользователь создан: test_user_1787584715769_1337@test.com
+🟢 Обновляем email на: zmiddleton@example.org
+📡 Попытка 1/3: PATCH https://stellarburgers.education-services.ru/api/auth/user
+✅ email успешно обновлен

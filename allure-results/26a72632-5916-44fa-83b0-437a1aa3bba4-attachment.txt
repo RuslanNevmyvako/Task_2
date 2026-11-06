@@ -1,0 +1,3 @@
+📡 Попытка 1/3: GET https://stellarburgers.education-services.ru/api/ingredients
+✅ Получено 15 ингредиентов
+📡 Попытка 1/3: POST https://stellarburgers.education-services.ru/api/orders
